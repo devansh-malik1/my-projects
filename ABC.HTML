@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Subject Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="verificationForm">
+        <h2>Student Subject Verification</h2>
+        <label for="name">Student Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="studentID">Student ID:</label>
+        <input type="text" id="studentID" required>
+
+        <label for="numOfSubjects">Number of Subjects:</label>
+        <input type="number" id="numOfSubjects" required>
+
+        <div id="subjectInputs"></div>
+
+        <button type="button" onclick="addSubjectInputs()">Add Subjects</button>
+
+        <button type="button" onclick="verifyStudent()">Verify</button>
+
+        <div id="verificationResult"></div>
+    </form>
+
+    <script>
+        function addSubjectInputs() {
+            const numOfSubjects = document.getElementById('numOfSubjects').value;
+            const subjectInputsContainer = document.getElementById('subjectInputs');
+
+            // Clear previous inputs
+            subjectInputsContainer.innerHTML = '';
+
+            for (let i = 1; i <= numOfSubjects; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Subject ${i}:`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.required = true;
+
+                subjectInputsContainer.appendChild(label);
+                subjectInputsContainer.appendChild(input);
+            }
+        }
+
+        function verifyStudent() {
+            const name = document.getElementById('name').value;
+            const studentID = document.getElementById('studentID').value;
+            const subjectInputs = document.getElementById('subjectInputs').getElementsByTagName('input');
+            const chosenSubjects = [];
+
+            for (let input of subjectInputs) {
+                chosenSubjects.push(input.value);
+            }
+
+            const allowedSubjects = ['Java', 'Python', 'CSS'];
+
+            const verificationResult = document.getElementById('verificationResult');
+
+            if (name && studentID && chosenSubjects.length > 0) {
+                if (allowedSubjects.every(subject => chosenSubjects.includes(subject))) {
+                    verificationResult.textContent = `Verification Successful. Welcome, ${name}! Chosen Subjects: ${chosenSubjects.join(', ')}.`;
+                } else {
+                    verificationResult.textContent = 'Verification Failed. Please check your chosen subjects.';
+                }
+            } else {
+                verificationResult.textContent = 'Please fill in all the required fields.';
+            }
+        }
+    </script>
+
+</body>
+</html>
